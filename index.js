@@ -1,3 +1,8 @@
+/**
+ * population used in -> GET: /students/:id 
+ * we are using the population while fetching the students
+ */
+
 import express from 'express';
 import mongoose from 'mongoose';
 import dotenv from 'dotenv';
@@ -54,8 +59,12 @@ app.post('/students', async function (req, res) {
   }
 });
 
+// In this route we have used population
 app.get('/students/:id', async function (req, res) {
   try {
+
+    // jis field ki poori documents chahiye us field ka name populate fn me paas kr denge
+    // for example :  popluate('branchId')
     const student = await Student.find({ _id: req.params.id }).populate('branchId').exec();
 
     return res.status(200).json({
