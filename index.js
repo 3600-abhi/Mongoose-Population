@@ -1,5 +1,4 @@
 /**
- * population used in -> GET: /students/:id 
  * we are using the population while fetching the students
  */
 
@@ -35,58 +34,6 @@ const studentSchema = new mongoose.Schema({
 
 const Student = new mongoose.model('Student', studentSchema);
 
-app.post('/students', async function (req, res) {
-  try {
-    const student = await Student.create({
-      name: req.body.name,
-      branchId: req.body.branchId
-    });
-
-    return res.status(200).json({
-      success: true,
-      message: 'Successfully created a student',
-      data: student,
-      error: {}
-    });
-  } catch (error) {
-    console.log(error);
-    return res.status(500).json({
-      success: false,
-      message: 'Something went wrong',
-      data: {},
-      error: error
-    });
-  }
-});
-
-// In this route we have used population
-app.get('/students/:id', async function (req, res) {
-  try {
-
-    // jis field ki poori documents chahiye us field ka name populate fn me paas kr denge
-    // for example :  popluate('branchId')
-    const student = await Student.find({ _id: req.params.id }).populate('branchId').exec();
-
-    return res.status(200).json({
-      success: true,
-      message: 'Successfully created a student',
-      data: student,
-      error: {}
-    });
-  } catch (error) {
-    console.log(error);
-    return res.status(500).json({
-      success: false,
-      message: 'Something went wrong',
-      data: {},
-      error: {}
-    });
-  }
-});
-
-
-
-
 const branchSchema = new mongoose.Schema({
   name: {
     type: String
@@ -96,47 +43,8 @@ const branchSchema = new mongoose.Schema({
 
 const Branch = new mongoose.model('Branch', branchSchema);
 
-app.post('/branches', async function (req, res) {
-  try {
-    const branch = await Branch.create({
-      name: req.body.name,
-      subjects: req.body.subjects
-    });
+// jis field ki poori documents chahiye us field ka name populate fn me paas kr denge
+// for example :  popluate('branchId')
+const student = await Student.findOne({ _id: '64a26af8c6fce02fb1617540' }).populate('branchId').exec();
 
-    return res.status(200).json({
-      success: true,
-      message: 'Successfully created a student',
-      data: branch,
-      error: {}
-    });
-  } catch (error) {
-    console.log(error);
-    return res.status(500).json({
-      success: false,
-      message: 'Something went wrong',
-      data: {},
-      error: error
-    });
-  }
-});
-
-app.get('/branches/:id', async function (req, res) {
-  try {
-    const branch = await Branch.find({ _id: req.params.id });
-
-    return res.status(200).json({
-      success: true,
-      message: 'Successfully created a student',
-      data: branch,
-      error: {}
-    });
-  } catch (error) {
-    console.log(error);
-    return res.status(500).json({
-      success: false,
-      message: 'Something went wrong',
-      data: {},
-      error: error
-    });
-  }
-});
+console.log('student = ', student);
